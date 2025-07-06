@@ -1,30 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Rock Paper Scissors - f8854813</title>
   <meta charset="UTF-8">
+  <title>f8854813</title>
 </head>
 <body>
   <h1>Rock Paper Scissors</h1>
 
   <p>Welcome quangtam2005.lttg from Building Web Applications in PHP</p>
 
-  <form>
-    <label for="human">Choose your move:</label>
-    <select id="human">
-      <option value="-1">-- Select --</option>
-      <option value="0">Rock</option>
-      <option value="1">Paper</option>
-      <option value="2">Scissors</option>
-    </select>
-    <input type="button" value="Play" onclick="playGame();">
-    <input type="button" value="Test" onclick="testAll();">
-  </form>
+  <label for="playerName">Enter your name:</label>
+  <input type="text" id="playerName" placeholder="Your name">
+  <button onclick="startGame()">Start</button>
 
-  <p id="result"></p>
+  <div id="gameArea" style="display:none; margin-top: 20px;">
+    <form>
+      <label for="humanMove">Choose your move:</label>
+      <select id="humanMove">
+        <option value="-1">--Select--</option>
+        <option value="0">Rock</option>
+        <option value="1">Paper</option>
+        <option value="2">Scissors</option>
+      </select>
+      <input type="button" value="Play" onclick="playGame()">
+      <input type="button" value="Test" onclick="testAll()">
+    </form>
+
+    <p id="result"></p>
+  </div>
 
   <script>
     const names = ["Rock", "Paper", "Scissors"];
+    let playerName = "";
+
+    function startGame() {
+      playerName = document.getElementById("playerName").value.trim();
+      if (playerName === "") {
+        alert("Please enter your name.");
+        return;
+      }
+      document.getElementById("gameArea").style.display = "block";
+    }
 
     function outcome(computer, human) {
       if (human == computer) return "Tie";
@@ -33,22 +49,29 @@
     }
 
     function playGame() {
-      let human = parseInt(document.getElementById("human").value);
+      const human = parseInt(document.getElementById("humanMove").value);
+      const result = document.getElementById("result");
+
       if (human < 0 || human > 2) {
-        document.getElementById("result").innerHTML = "Please select a valid move.";
+        result.innerHTML = "Please select a valid move.";
         return;
       }
-      let computer = Math.floor(Math.random() * 3);
-      let result = outcome(computer, human);
-      document.getElementById("result").innerHTML =
-        "Your Play: " + names[human] + "<br>Computer Play: " + names[computer] + "<br>Result: " + result;
+
+      const computer = Math.floor(Math.random() * 3);
+      const outcomeResult = outcome(computer, human);
+
+      result.innerHTML = `
+        <strong>${playerName}</strong>, you played: ${names[human]}<br>
+        Computer played: ${names[computer]}<br>
+        Result: <strong>${outcomeResult}</strong>
+      `;
     }
 
     function testAll() {
       let output = "";
       for (let h = 0; h < 3; h++) {
         for (let c = 0; c < 3; c++) {
-          output += "Human=" + names[h] + " Computer=" + names[c] + " Result=" + outcome(c, h) + "<br>";
+          output += `Human=${names[h]} | Computer=${names[c]} | Result=${outcome(c, h)}<br>`;
         }
       }
       document.getElementById("result").innerHTML = output;
