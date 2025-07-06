@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Guessing Game</title>
-  <meta charset="UTF-8">
+    <title>f8854813</title>
+    <meta charset="UTF-8">
 </head>
+
 <body>
-  <h1>Welcome to my guessing game</h1>
+    <h1>Welcome to my guessing game</h1>
 
-  <label for="guess">Enter your guess:</label>
-  <input type="text" id="guess">
-  <button onclick="checkGuess()">Submit</button>
+    <label for="guess">Enter your guess:</label>
+    <input type="text" id="guess">
+    <button onclick="checkGuess()">Submit</button>
 
-  <p id="result"></p>
+    <p id="result"></p>
 
-  <script>
-    const correctNumber = 26;
+    <script>
+        const correctNumber = 77;
 
-    function checkGuess() {
-      const guessInput = document.getElementById("guess").value;
-      const result = document.getElementById("result");
+        // Lấy giá trị từ URL nếu có ?guess=
+        const params = new URLSearchParams(window.location.search);
+        const urlGuess = params.get("guess");
 
-      if (guessInput.trim() === "") {
-        result.innerHTML = "Missing guess parameter <br> Your guess is too short";
-        return;
-      }
+        if (urlGuess !== null) {
+            document.getElementById("guess").value = urlGuess;
+            checkGuess(urlGuess);
+        }
 
-      const guess = parseInt(guessInput);
+        function checkGuess(overrideValue = null) {
+            const guessInput = overrideValue !== null ? overrideValue : document.getElementById("guess").value;
+            const result = document.getElementById("result");
 
-      if (isNaN(guess)) {
-        result.innerHTML = "Your guess is not a number";
-      } else if (guess < correctNumber) {
-        result.innerHTML = "Your guess is too low";
-      } else if (guess > correctNumber) {
-        result.innerHTML = "Your guess is too high";
-      } else {
-        result.innerHTML = "Congratulations - You are right";
-      }
-    }
-  </script>
+            if (guessInput.trim() === "") {
+                result.innerHTML = "Missing guess parameter <br> Your guess is too short";
+                return;
+            }
+
+            const guess = parseInt(guessInput);
+
+            if (isNaN(guess)) {
+                result.innerHTML = "Your guess is not a number";
+            } else if (guess < correctNumber) {
+                result.innerHTML = "Your guess is too low";
+            } else if (guess > correctNumber) {
+                result.innerHTML = "Your guess is too high";
+            } else {
+                result.innerHTML = "Congratulations - You are right";
+            }
+        }
+    </script>
 </body>
+
 </html>
